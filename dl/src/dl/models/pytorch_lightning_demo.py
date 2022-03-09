@@ -8,7 +8,10 @@ from pytorch_lightning import Trainer
 from torch.utils.data import DataLoader
 from torchvision import transforms
 from torchvision.datasets import MNIST
+from pytorch_lightning.loggers import WandbLogger
 
+GPUS = 1
+NUM_WORKERS = 12
 
 class LitModel(pl.LightningModule):
     def __init__(self):
@@ -32,6 +35,7 @@ class LitModel(pl.LightningModule):
         x, y = batch
         y_hat = self(x)
         loss = F.cross_entropy(y_hat, y)
+        self.log('train_loss', loss)
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -47,10 +51,10 @@ class LitModel(pl.LightningModule):
         self.log("test_loss", test_loss)
 
 
-dataset = MNIST(os.getcwd(), download=True, transform=transforms.ToTensor())
-train_loader = DataLoader(dataset)
+dataset = MNIST(f'{os.getcwd()}/data/01_raw', download=True, transform=transforms.ToTensor())
+train_loader = DataLoader(dataset, num_workers=NUM_WORKERS, batch_size=1024)
 
 model = LitModel()
 
-trainer = Trainer()
+trainer = Trainer(logger=WandbLogger(), gpus=GPUS)
 trainer.fit(model=model, train_dataloaders=train_loader)
