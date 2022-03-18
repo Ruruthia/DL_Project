@@ -1,0 +1,10 @@
+# This is a boilerplate parameters config generated for pipeline 'data_split'
+# using Kedro 0.17.7.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://kedro.readthedocs.io/en/0.17.7/04_kedro_project_setup/02_configuration.html#parameters
+source: 'data/01_raw/sharks'
+destination: 'data/02_intermediate/sharks'
+test_ratio: 0.2
+val_ratio: 0.1
+seed: 42
