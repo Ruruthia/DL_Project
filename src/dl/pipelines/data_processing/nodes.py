@@ -11,6 +11,7 @@ from torchvision import transforms
 from torchvision.datasets import ImageFolder
 
 
+
 def process_data(
         source: Union[str, Path],
         batch_size: int,
@@ -19,8 +20,7 @@ def process_data(
     if isinstance(source, str):
         source = Path(source)
 
-    data_transforms = {
-        'train': transforms.Compose([
+    train_transform = transforms.Compose([
             transforms.Resize(256),
             transforms.CenterCrop(256),
             transforms.RandomRotation(25),  # randomly rotate images by 25 degrees
@@ -30,8 +30,8 @@ def process_data(
                 mean=[0.5, 0.5, 0.5],
                 std=[0.5, 0.5, 0.5]
             )
-        ]),
-        'test': transforms.Compose([
+    ])
+    transform = transforms.Compose([
             transforms.Resize(256),
             transforms.CenterCrop(256),
             transforms.ToTensor(),
@@ -39,16 +39,12 @@ def process_data(
                 mean=[0.5, 0.5, 0.5],
                 std=[0.5, 0.5, 0.5]
             )
-        ]),
-        'val': transforms.Compose([
-            transforms.Resize(256),
-            transforms.CenterCrop(256),
-            transforms.ToTensor(),
-            transforms.Normalize(
-                mean=[0.5, 0.5, 0.5],
-                std=[0.5, 0.5, 0.5]
-            )
-        ]),
+        ])
+
+    data_transforms = {
+        'train': train_transform,
+        'test': transform,
+        'val': transform
     }
 
     data_loaders = [

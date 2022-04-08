@@ -2,3 +2,20 @@
 #
 # Documentation for this file format can be found in "The Data Catalog"
 # Link: https://kedro.readthedocs.io/en/stable/05_data/01_data_catalog.html
+
+
+Sharks_dataset:
+  type: dl.kedro_extras.datasets.KaggleDataSet
+  save_args:
+    blabla: data
+    super_credential: extra
+  load_args:
+    transform: [ "resize", "todo" ]
+  filepath: data/01_raw/sharks
+
+
+RNO_dataset:
+  type: yaml.YAMLDataSet
+  filepath: data/01_raw/sharks.yaml
+
+
