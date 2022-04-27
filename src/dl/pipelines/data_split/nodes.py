@@ -2,38 +2,44 @@
 This is a boilerplate pipeline 'data_split'
 generated using Kedro 0.17.7
 """
-import shutil
 import random
-from pathlib import Path
-from typing import Union, Iterable
+from copy import copy
+from typing import Dict
+
+from sklearn.model_selection import train_test_split
+from torch.utils.data import Subset
+from torchvision.datasets import ImageFolder
 
 
 def split(
-        source: Union[str, Path],
-        destination: Union[str, Path],
+        sharks_dataset: ImageFolder,
         test_ratio: float,
         val_ratio: float,
         seed: int,
-) -> None:
+) -> Dict[str, Subset]:
     random.seed(seed)
 
-    if isinstance(source, str):
-        source = Path(source)
-    if isinstance(destination, str):
-        destination = Path(destination)
+    train_indices, val_test_indices, _, val_test_targets = train_test_split(
+        range(len(sharks_dataset)),
+        sharks_dataset.targets,
+        stratify=sharks_dataset.targets,
+        test_size=test_ratio + val_ratio,
+        random_state=seed
+    )
 
-    for class_dir in source.iterdir():
-        images = [file.name for file in class_dir.iterdir()]
-        random.shuffle(images)
-        no_test = int(len(images) * test_ratio)
-        no_val = int(len(images) * val_ratio)
+    val_indices, test_indices, _, _ = train_test_split(
+        val_test_indices,
+        val_test_targets,
+        stratify=val_test_targets,
+        test_size=test_ratio / (val_ratio + test_ratio),
+        random_state=seed
+    )
 
-        copy_files(class_dir, destination / 'test' / class_dir.name, images[:no_test])
-        copy_files(class_dir, destination / 'val' / class_dir.name, images[no_test: no_test + no_val])
-        copy_files(class_dir, destination / 'train' / class_dir.name, images[no_test + no_val:])
+    train_sharks_subset = Subset(sharks_dataset, train_indices)
+    val_sharks_subset = Subset(sharks_dataset, val_indices)
+    val_sharks_subset.dataset = copy(sharks_dataset)
+    test_sharks_subset = Subset(sharks_dataset, test_indices)
+    test_sharks_subset.dataset = copy(sharks_dataset)
 
+    return {"train": train_sharks_subset, "val": val_sharks_subset, "test": test_sharks_subset}
 
-def copy_files(source: Path, destination: Path, files: Iterable[str]):
-    destination.mkdir(parents=True)
-    for file in files:
-        shutil.copyfile(source / file, destination / file)

@@ -15,7 +15,7 @@ def register_pipelines() -> Dict[str, Pipeline]:
     data_processing_pipeline = data_processing.create_pipeline()
 
     return {
-        "__default__": pipeline([]),
+        "__default__": pipeline([data_split_pipeline, data_processing_pipeline]),
         "data_split": data_split_pipeline,
         "data_processing": data_processing_pipeline,
     }
