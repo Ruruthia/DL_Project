@@ -14,7 +14,7 @@ hp_config: {
     "min_gamma": 0.05,
     "max_gamma": 0.5
 }
-hp_num_epochs: 1
+hp_num_epochs: 2
 hp_num_samples: 2
 hp_cpus: 1
 hp_gpus: 0

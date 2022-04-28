@@ -42,12 +42,8 @@ def train(train_data_loader, val_data_loader, model_type, config, num_epochs, gp
 
 
 def evaluate(test_data_loader, model_path, model_type, gpus, project, output_path):
-    if model_type == "resnet":
-        model = ResNet18Lit.load_from_checkpoint(model_path)
-    elif model_type == "cnn":
-        model = CNNLit.load_from_checkpoint(model_path)
-    else:
-        raise NotImplementedError("Possible model types are resnet or cnn!")
+
+    model = create_model(model_type, config)
 
     trainer = pl.Trainer(gpus=gpus, logger=WandbLogger(save_dir=f"logs/", project=project,
                                                        name=f'{Path(model_path).stem}_evaluation'))
