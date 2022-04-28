@@ -4,6 +4,8 @@ generated using Kedro 0.17.7
 """
 
 import random
+import os
+import zipfile
 from copy import copy
 from typing import Dict
 from typing import List
@@ -12,9 +14,24 @@ from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader, Subset
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
+from kaggle.api.kaggle_api_extended import KaggleApi
 
 
-def split(
+def download_data(
+        path: str
+):
+    if os.path.isdir(path + '/sharks'):
+        return None
+
+    api = KaggleApi()
+    api.authenticate()
+    api.dataset_download_files('larusso94/shark-species', path=path)
+    with zipfile.ZipFile(path + '/shark-species.zip', 'r') as zip_file:
+        zip_file.extractall(path)
+    os.remove(path + '/shark-species.zip')
+
+
+def split_data(
         sharks_dataset: ImageFolder,
         test_ratio: float,
         val_ratio: float,
