@@ -1,0 +1,17 @@
+# This is a boilerplate parameters config generated for pipeline 'train_model'
+# using Kedro 0.17.7.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://kedro.readthedocs.io/en/0.17.7/04_kedro_project_setup/02_configuration.html#parameters
+
+model_type: 'resnet'
+config: {
+    "lr": 0.01,
+    "momentum": 0.2,
+    "step_size": 4,
+    "gamma": 0.1
+}
+num_epochs: 1
+gpus: 0
+project: 'sharks_classification'
+output_path: 'data/08_reporting/resnet/'

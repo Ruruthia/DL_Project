@@ -1,0 +1,22 @@
+# This is a boilerplate parameters config generated for pipeline 'optimize_hyperparams'
+# using Kedro 0.17.7.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://kedro.readthedocs.io/en/0.17.7/04_kedro_project_setup/02_configuration.html#parameters
+
+hp_model_type: 'resnet'
+hp_config: {
+    "min_lr": 0.0001,
+    "max_lr": 0.01,
+    "min_momentum": 0.05,
+    "max_momentum": 0.5,
+    "step_size": [1, 2, 4, 6, 8, 10],
+    "min_gamma": 0.05,
+    "max_gamma": 0.5
+}
+hp_num_epochs: 1
+hp_num_samples: 2
+hp_cpus: 1
+hp_gpus: 0
+hp_project: 'hp_sharks_classification'
+hp_output_path: 'data/08_reporting/resnet/best_hyperparams.json'

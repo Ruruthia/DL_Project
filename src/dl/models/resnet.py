@@ -1,6 +1,7 @@
 import pytorch_lightning as pl
 import torch
 import torch.nn as nn
+from pytorch_lightning.loggers import wandb
 from torch.optim import lr_scheduler, SGD
 from torchvision import models
 
