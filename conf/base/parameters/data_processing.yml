@@ -4,6 +4,7 @@
 # Documentation for this file format can be found in "Parameters"
 # Link: https://kedro.readthedocs.io/en/0.17.7/04_kedro_project_setup/02_configuration.html#parameters
 
+raw_data_filepath: data/01_raw
 
 test_ratio: 0.2
 val_ratio: 0.1
