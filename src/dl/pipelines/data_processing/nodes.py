@@ -3,21 +3,16 @@ This is a boilerplate pipeline 'data_processing'
 generated using Kedro 0.17.7
 """
 
-from pathlib import Path
-from typing import Union, Mapping
+from typing import Dict, List
 
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Subset
 from torchvision import transforms
-from torchvision.datasets import ImageFolder
 
 
 def process_data(
-        source: Union[str, Path],
+        sharks_data_subsets: Dict[str, Subset],
         batch_size: int,
-) -> Mapping[str, DataLoader]:
-
-    if isinstance(source, str):
-        source = Path(source)
+) -> List[DataLoader]:
 
     data_transforms = {
         'train': transforms.Compose([
@@ -50,13 +45,16 @@ def process_data(
             )
         ]),
     }
+    for data_set in ('train', 'test', 'val'):
+        sharks_data_subsets[data_set].dataset.transform = data_transforms[data_set]
 
-    data_loaders = {
-        data_set: DataLoader(
-            ImageFolder(root=str(source / data_set), transform=data_transforms[data_set]),
+    data_loaders = [
+        DataLoader(
+            sharks_data_subsets[data_set],
             batch_size=batch_size,
             shuffle=True,
         )
         for data_set in ('train', 'test', 'val')
-    }
+    ]
+
     return data_loaders

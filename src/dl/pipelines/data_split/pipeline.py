@@ -11,7 +11,7 @@ def create_pipeline(**kwargs) -> Pipeline:
     return pipeline([
         node(
             func=split,
-            inputs=["params:raw_source", "params:split_destination", "params:test_ratio", "params:val_ratio", "params:seed"],
-            outputs=None,
+            inputs=["sharks_raw_dataset", "params:test_ratio", "params:val_ratio", "params:seed"],
+            outputs="sharks_data_subsets"
         )
     ])
