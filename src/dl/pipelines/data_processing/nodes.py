@@ -4,7 +4,7 @@ generated using Kedro 0.17.7
 """
 
 from pathlib import Path
-from typing import Union, List
+from typing import Union, Mapping
 
 from torch.utils.data import DataLoader
 from torchvision import transforms
@@ -14,7 +14,7 @@ from torchvision.datasets import ImageFolder
 def process_data(
         source: Union[str, Path],
         batch_size: int,
-) -> List[DataLoader]:
+) -> Mapping[str, DataLoader]:
 
     if isinstance(source, str):
         source = Path(source)
@@ -51,12 +51,12 @@ def process_data(
         ]),
     }
 
-    data_loaders = [
-        DataLoader(
+    data_loaders = {
+        data_set: DataLoader(
             ImageFolder(root=str(source / data_set), transform=data_transforms[data_set]),
             batch_size=batch_size,
             shuffle=True,
         )
         for data_set in ('train', 'test', 'val')
-    ]
+    }
     return data_loaders
