@@ -31,7 +31,7 @@ def download_data(
     os.remove(path + '/shark-species.zip')
 
 
-def split(
+def split_data(
         sharks_dataset: ImageFolder,
         test_ratio: float,
         val_ratio: float,

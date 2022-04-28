@@ -4,7 +4,7 @@ generated using Kedro 0.17.7
 """
 
 from kedro.pipeline import Pipeline, node, pipeline
-from .nodes import download_data, split, process_data
+from .nodes import download_data, split_data, process_data
 
 
 def create_pipeline(**kwargs) -> Pipeline:
@@ -16,7 +16,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             name="download_data_node",
         ),
         node(
-            func=split,
+            func=split_data,
             inputs=["sharks_raw_dataset", "params:test_ratio", "params:val_ratio", "params:seed"],
             outputs="sharks_data_subsets",
             name="split_data_node",
