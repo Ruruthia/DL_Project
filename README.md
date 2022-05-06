@@ -1,11 +1,10 @@
 # Sharks classification (ongoing)
 
 ## Overview
-(will be updated during the project)
 
 The goal of the project is to deliver a deep learning model classifying an open-source dataset of [Shark species](https://www.kaggle.com/larusso94/shark-species) available on Kaggle.
 
-The project will consist of a training and evaluation scripts wrapped with [Kedro](https://kedro.readthedocs.io/en/stable/index.html) project. We are going to prepare a fully transferable setup so that you can train and run the model either locally or using a cloud provider. We have decided to use Google Cloud Platform, so you will find detailed instructions how to start it off with GCP.
+The project will consist of a training and evaluation scripts wrapped with [Kedro](https://kedro.readthedocs.io/en/stable/index.html) project. 
 
 Therefore, we are going to use some state-of-the-art convolutional neural networks adjusted to the needs of the dataset. We are aware that the project is not revolutionary at, but its goal is to learn how to deliver end-to-end ML model rather than make an innovative step in research.
 
@@ -16,24 +15,29 @@ The papers which describe the models that we are going to use are obviously:
 
 ## How to install dependencies
 
-Declare any dependencies in `src/requirements.txt` for `pip` installation and `src/environment.yml` for `conda` installation.
-
-To install them, run:
+Due to complicated dependencies, we are using conda environment for this project. 
+To prepare it, run:
 
 ```
-kedro install
+conda env create -f environment.yml
 ```
 
 ## How to run your Kedro pipeline
 
-You can run your Kedro project with:
+There are 3 pipelines: 
+- `data_processing` for preparing the data
+- `train_model` for training and evaluating model with given hyperparameters
+- `optimize_hyperparams` for hyperparams optimization using Raytune
+
+To run any of them, run:
 
 ```
-kedro run
+kedro run --pipeline pipeline_name
 ```
 
-## How to train the model and log the progress
+`data_processing` pipeline will be automatically started before running `train_model` or `optimize_hyperparams`
+Results of training (in both `train_model` and `optimize_hyperparams`) will get logged to Weights & Biases.
 
-After preparing the data with `kedro run`, use the `notebooks/experiments.ipynb` notebook to train the model, log training progress and save the best version of the model.
-Logging is handled by Weights&Biases. To see the results, you need to register [here](https://wandb.ai/).
-In the following weeks training is going to be scripted, but for experiments we preferred to use Jupyter notebook.
+## Results of experiments
+
+Results of our experiments can be found [here](https://github.com/Ruruthia/DL_Project/blob/123b8b8892a9fc1386de1904f70ad5222f67c2ac/docs/Summary.md).
