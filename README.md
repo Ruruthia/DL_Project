@@ -1,4 +1,4 @@
-# Sharks classification (ongoing)
+# Sharks classification
 
 ## Overview
 
